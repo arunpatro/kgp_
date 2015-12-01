@@ -6,24 +6,23 @@ url_UG = 'https://erp.iitkgp.ernet.in/ERPWebServices/curricula/specialisationLis
 url_dep = 'https://erp.iitkgp.ernet.in/ERPWebServices/curricula/'
 url_download = 'https://erp.iitkgp.ernet.in/ERPWebServices/curricula/commonFileDownloader.jsp?fileFullPath='
 
+
 db_UG={}
 db={}
 
-#to download one file
 def download(url,name):
 	f = urllib2.urlopen(url)
 	with open(name, "wb") as code:
 		code.write(f.read())
 
-#accumulating all curriculums for all Departments/Stream
 response_UG = requests.get(url_UG)
-soup_UG = BeautifulSoup(response_UG.text,'html.parser')
+soup_UG = BeautifulSoup(response.text,'html.parser')
+
 all_dep = soup_UG.find_all('a')
 db_UG={}
 for link in all_dep:
 	db_UG[link.get('href')[45:]]=url_dep + link.get('href')
 
-#accumulating all courses for each Department
 for item in db_UG:
 	url = db_UG[item]
 	response = requests.get(url)
@@ -36,7 +35,6 @@ for item in db_UG:
 
 
 #downloading all files
-for item in db:
-	download(db[item],item+'.pdf')
-
+# for item in db:
+# 	download(db[item],item+'.pdf')
 
